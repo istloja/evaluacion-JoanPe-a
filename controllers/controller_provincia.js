@@ -28,22 +28,21 @@ router.get('/all', (req, res) => {
 
 }).post('/update', (req, res) => {
     var body = req.body;
-    provincia.update({
-        id: body.id
-    }, {
-        $set: {
-            nombre: body.nombre,
-            nroCantones: body.nroCantones,
-            superficie: body.superficie,
-            region: body.region, id_pais: body.id_pais
-        }
-    }, (err, rest) => {
-        if (err) {
-            console.error(err)
-            throw err;
-        }
-        res.status(200).json(rest)
-    })
+    provincia.update({ nombre: body.nombre },
+        {
+            $set: {
+                nombre: body.nombre,
+                nroCantones: body.nroCantones,
+                superficie: body.superficie,
+                region: body.region, id_pais: body.id_pais
+            }
+        }, (err, rest) => {
+            if (err) {
+                console.error(err)
+                throw err;
+            }
+            res.status(200).json(rest)
+        })
 }).post('/super', (req, res) => {
     var body = req.body
     provincia.find({ superficie: body.superficie }, (err, rest) => {
@@ -55,7 +54,7 @@ router.get('/all', (req, res) => {
             if (body > data.superficie) {
                 res.status(200).json(data.nombre)
             }
-            res.status(404).json({mensaje:"no hay mayor"})
+            res.status(404).json({ mensaje: "no hay mayor" })
         });
     })
 })
