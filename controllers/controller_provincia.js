@@ -2,7 +2,7 @@ var provincia = require('../models/provincia'),
     express = require('express'),
     router = express.Router();
 
-router.get('/all', (req, res) => {
+router.get('/', (req, res) => {
     provincia.find({}, (err, docs) => {
         if (err) {
             console.error(err)
@@ -43,7 +43,7 @@ router.get('/all', (req, res) => {
             }
             res.status(200).json(rest)
         })
-}).post('/super', (req, res) => {
+}).post('/encon_super', (req, res) => {
     var body = req.body
     provincia.find({ superficie: body.superficie }, (err, rest) => {
         if (err) {
