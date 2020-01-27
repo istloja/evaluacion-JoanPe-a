@@ -17,7 +17,8 @@ router.get('/all',(req,res)=>{
         nombre:body.nombre,
         moneda:body.moneda,
         superficie:body.superficie,
-        idioma:body.idioma,nroHabitantes:body.nroHabitantes    
+        idioma:body.idioma,
+        nroHabitantes:body.nroHabitantes    
     },(err,rest)=>{
         if(err){
             console.error(err)
@@ -28,6 +29,14 @@ router.get('/all',(req,res)=>{
 
 }).post('/delete',(req,res)=>{
     Pais.remove({nombre:req.body.nombre},(err,docs)=>{
+        if(err){
+            console.error(err)
+            throw err;
+        }
+        res.status(200).json(docs)
+    })
+}).post('/search',(req,res)=>{
+    Pais.find({},(err,docs)=>{
         if(err){
             console.error(err)
             throw err;

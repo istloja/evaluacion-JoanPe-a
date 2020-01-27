@@ -1,9 +1,9 @@
-var pais = require('../models/provincia'),
+var provincia = require('../models/provincia'),
     express = require('express'),
     router = express.Router();
 
 router.get('/all', (req, res) => {
-    pais.find({}, (err, docs) => {
+    provincia.find({}, (err, docs) => {
         if (err) {
             console.error(err)
             throw err;
@@ -12,11 +12,12 @@ router.get('/all', (req, res) => {
     })
 }).post('/create', (req, res) => {
     var body = req.body;
-    pais.insertMany({
+    provincia.insertMany({
         nombre: body.nombre,
         nroCantones: body.nroCantones,
         superficie: body.superficie,
-        region: body.region, id_pais: body.id_pais
+        region: body.region,
+        id_pais: body.id_pais
     }, (err, rest) => {
         if (err) {
             console.error(err)
@@ -27,24 +28,36 @@ router.get('/all', (req, res) => {
 
 }).post('/update', (req, res) => {
     var body = req.body;
-    pais.update({
+    provincia.update({
         id: body.id
     }, {
         $set: {
-
             nombre: body.nombre,
             nroCantones: body.nroCantones,
             superficie: body.superficie,
             region: body.region, id_pais: body.id_pais
-        }      
+        }
     }, (err, rest) => {
-    if (err) {
-        console.error(err)
-        throw err;
-    }
-    res.status(200).json(rest)
-})
-
+        if (err) {
+            console.error(err)
+            throw err;
+        }
+        res.status(200).json(rest)
+    })
+}).post('/super', (req, res) => {
+    var body = req.body
+    provincia.find({ superficie: body.superficie }, (err, rest) => {
+        if (err) {
+            console.error(err)
+            throw err;
+        }
+        rest.forEach(data => {
+            if (body > data.superficie) {
+                res.status(200).json(data.nombre)
+            }
+            res.status(404).json({mensaje:"no hay mayor"})
+        });
+    })
 })
 
 module.exports = router;
