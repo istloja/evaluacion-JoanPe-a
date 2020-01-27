@@ -44,11 +44,10 @@ router.get('/', (req, res) => {
                 console.error(err)
                 throw err;
             }
-            res.status(200).json(data)
+            res.status(200).json(docs)
 
         })
         if (err) {
-
             res.status(200).json({ mensaje: "ningun pais con el id" })
         }
     })
