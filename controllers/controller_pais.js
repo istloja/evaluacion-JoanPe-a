@@ -38,19 +38,25 @@ router.get('/', (req, res) => {
     })
 }).post('/search_pais', (req, res) => {
     Pais.find({ id: req.body.id }, (err, docs) => {
-        var body = req.body.id
-        provincia.find({ id_pais: body }, (err, docs) => {
+        docs.forEach(data => {
+            provincia.find({ id_pais: data.id }, (err, docs) => {
+                if (err) {
+                    console.error(err)
+                    throw err;
+                }
+                res.status(200).json(docs)
+    
+            })
             if (err) {
-                console.error(err)
-                throw err;
+                res.status(200).json({ mensaje: "ningun pais con el id" })
             }
-            res.status(200).json(docs)
-
-        })
-        if (err) {
-            res.status(200).json({ mensaje: "ningun pais con el id" })
-        }
+        });        
+        
     })
 })
 
 module.exports = router;
+
+
+
+

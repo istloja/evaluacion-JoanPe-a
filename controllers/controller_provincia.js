@@ -1,4 +1,4 @@
-var provincia = require('../models/provincia'),
+const provincia = require('../models/provincia'),
     express = require('express'),
     router = express.Router();
 
@@ -45,17 +45,13 @@ router.get('/', (req, res) => {
         })
 }).post('/encon_super', (req, res) => {
     var body = req.body
-    provincia.find({ superficie: body.superficie }, (err, rest) => {
+    provincia.find({superficie:{$gt:body.superficie}},{superficie:1}, (err, rest) => {
         if (err) {
             console.error(err)
             throw err;
         }
-        rest.forEach(data => {
-            if (body > data.superficie) {
-                res.status(200).json(data.nombre)
-            }
-            res.status(404).json({ mensaje: "no hay mayor" })
-        });
+        res.status(404).json(rest)
+
     })
 })
 
